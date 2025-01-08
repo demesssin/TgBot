@@ -9,6 +9,7 @@
   <url>http://maven.apache.org</url>
   <modules>
     <module>dispatcher</module>
+    <module>common-rabbitmq</module>
   </modules>
 
   <parent>
@@ -27,10 +28,9 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.18.4</version>
+      <version>1.18.36</version>
       <scope>provided</scope>
     </dependency>
-
 
   </dependencies>
 
