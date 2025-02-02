@@ -9,3 +9,219 @@
 2025-01-08 22:59:56 DEBUG UpdateProducerImpl:14 - Пробуем еще раз!
 2025-01-08 23:00:13 DEBUG UpdateProducerImpl:14 - 
 2025-01-08 23:00:43 DEBUG UpdateProducerImpl:14 - 
+2025-01-17 04:33:52 DEBUG UpdateProducerImpl:21 - Hello
+2025-01-30 19:18:35 DEBUG UpdateProducerImpl:21 - hello
+2025-01-30 19:18:41 DEBUG UpdateProducerImpl:21 - h
+2025-01-30 19:18:41 DEBUG UpdateProducerImpl:21 - h
+2025-01-30 19:18:41 DEBUG UpdateProducerImpl:21 - h
+2025-01-30 19:18:43 DEBUG UpdateProducerImpl:21 - h
+2025-01-30 19:18:43 DEBUG UpdateProducerImpl:21 - h
+2025-01-30 19:18:43 DEBUG UpdateProducerImpl:21 - h
+2025-01-30 19:18:43 DEBUG UpdateProducerImpl:21 - h
+2025-02-02 13:09:45 DEBUG UpdateProducerImpl:21 - Sup
+2025-02-02 13:09:50 DEBUG UpdateProducerImpl:21 - Sup
+2025-02-02 13:10:12 DEBUG UpdateProducerImpl:21 - La la lal lal
+2025-02-02 13:10:15 DEBUG UpdateProducerImpl:21 - f
+2025-02-02 13:10:15 DEBUG UpdateProducerImpl:21 - f
+2025-02-02 13:10:15 DEBUG UpdateProducerImpl:21 - f
+2025-02-02 13:10:16 DEBUG UpdateProducerImpl:21 - ff
+2025-02-02 13:10:16 DEBUG UpdateProducerImpl:21 - f
+2025-02-02 13:10:16 DEBUG UpdateProducerImpl:21 - f
+2025-02-02 13:11:33 DEBUG UpdateProducerImpl:21 - 
+2025-02-02 13:11:42 DEBUG UpdateProducerImpl:21 - d
+2025-02-02 13:12:31 DEBUG UpdateProducerImpl:21 - fdfdfdfd
+2025-02-02 13:17:29 DEBUG UpdateProducerImpl:21 - Hello, whats the problem>
+2025-02-02 13:18:59 DEBUG UpdateProducerImpl:21 - did u hear anything, rabbit
+2025-02-02 13:19:00 DEBUG UpdateProducerImpl:21 - ?
+2025-02-02 13:19:07 DEBUG UpdateProducerImpl:21 - 
+2025-02-02 18:04:35 ERROR TelegramBot:87 - Ошибка при отправке документа
+org.telegram.telegrambots.meta.exceptions.TelegramApiException: Unable to send document
+	at org.telegram.telegrambots.bots.DefaultAbsSender.execute(DefaultAbsSender.java:203)
+	at ru.relex.controller.TelegramBot.sendAnswerDocument(TelegramBot.java:85)
+	at ru.relex.controller.UpdateController.sendExcelFile(UpdateController.java:88)
+	at ru.relex.controller.UpdateController.handleDocumentMessage(UpdateController.java:72)
+	at ru.relex.controller.UpdateController.processUpdate(UpdateController.java:44)
+	at ru.relex.controller.TelegramBot.onUpdateReceived(TelegramBot.java:69)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:317)
+Caused by: java.io.FileNotFoundException: C:\Users\Admin\Documents\work (Отказано в доступе)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at org.apache.http.entity.mime.content.FileBody.writeTo(FileBody.java:116)
+	at org.apache.http.entity.mime.AbstractMultipartForm.doWriteTo(AbstractMultipartForm.java:134)
+	at org.apache.http.entity.mime.AbstractMultipartForm.writeTo(AbstractMultipartForm.java:157)
+	at org.apache.http.entity.mime.MultipartFormEntity.writeTo(MultipartFormEntity.java:113)
+	at org.apache.http.impl.DefaultBHttpClientConnection.sendRequestEntity(DefaultBHttpClientConnection.java:156)
+	at org.apache.http.impl.conn.CPoolProxy.sendRequestEntity(CPoolProxy.java:152)
+	at org.apache.http.protocol.HttpRequestExecutor.doSendRequest(HttpRequestExecutor.java:238)
+	at org.apache.http.protocol.HttpRequestExecutor.execute(HttpRequestExecutor.java:123)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:272)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:186)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:83)
+	at org.telegram.telegrambots.bots.DefaultAbsSender.sendHttpPostRequest(DefaultAbsSender.java:1079)
+	at org.telegram.telegrambots.bots.DefaultAbsSender.execute(DefaultAbsSender.java:201)
+	... 8 more
+2025-02-02 18:07:36 ERROR TelegramBot:87 - Ошибка при отправке документа
+org.telegram.telegrambots.meta.exceptions.TelegramApiException: Unable to send document
+	at org.telegram.telegrambots.bots.DefaultAbsSender.execute(DefaultAbsSender.java:203)
+	at ru.relex.controller.TelegramBot.sendAnswerDocument(TelegramBot.java:85)
+	at ru.relex.controller.UpdateController.sendExcelFile(UpdateController.java:88)
+	at ru.relex.controller.UpdateController.handleDocumentMessage(UpdateController.java:72)
+	at ru.relex.controller.UpdateController.processUpdate(UpdateController.java:44)
+	at ru.relex.controller.TelegramBot.onUpdateReceived(TelegramBot.java:69)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:317)
+Caused by: java.io.FileNotFoundException: C:\Users\Admin\Documents\work (Отказано в доступе)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at org.apache.http.entity.mime.content.FileBody.writeTo(FileBody.java:116)
+	at org.apache.http.entity.mime.AbstractMultipartForm.doWriteTo(AbstractMultipartForm.java:134)
+	at org.apache.http.entity.mime.AbstractMultipartForm.writeTo(AbstractMultipartForm.java:157)
+	at org.apache.http.entity.mime.MultipartFormEntity.writeTo(MultipartFormEntity.java:113)
+	at org.apache.http.impl.DefaultBHttpClientConnection.sendRequestEntity(DefaultBHttpClientConnection.java:156)
+	at org.apache.http.impl.conn.CPoolProxy.sendRequestEntity(CPoolProxy.java:152)
+	at org.apache.http.protocol.HttpRequestExecutor.doSendRequest(HttpRequestExecutor.java:238)
+	at org.apache.http.protocol.HttpRequestExecutor.execute(HttpRequestExecutor.java:123)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:272)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:186)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:83)
+	at org.telegram.telegrambots.bots.DefaultAbsSender.sendHttpPostRequest(DefaultAbsSender.java:1079)
+	at org.telegram.telegrambots.bots.DefaultAbsSender.execute(DefaultAbsSender.java:201)
+	... 8 more
+2025-02-02 18:13:01 ERROR TelegramBot:87 - Ошибка при отправке документа
+org.telegram.telegrambots.meta.exceptions.TelegramApiException: Unable to send document
+	at org.telegram.telegrambots.bots.DefaultAbsSender.execute(DefaultAbsSender.java:203)
+	at ru.relex.controller.TelegramBot.sendAnswerDocument(TelegramBot.java:85)
+	at ru.relex.controller.UpdateController.sendExcelFile(UpdateController.java:88)
+	at ru.relex.controller.UpdateController.handleDocumentMessage(UpdateController.java:72)
+	at ru.relex.controller.UpdateController.processUpdate(UpdateController.java:44)
+	at ru.relex.controller.TelegramBot.onUpdateReceived(TelegramBot.java:69)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:317)
+Caused by: java.io.FileNotFoundException: C:\Users\Admin\Documents\work (Отказано в доступе)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:213)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:152)
+	at org.apache.http.entity.mime.content.FileBody.writeTo(FileBody.java:116)
+	at org.apache.http.entity.mime.AbstractMultipartForm.doWriteTo(AbstractMultipartForm.java:134)
+	at org.apache.http.entity.mime.AbstractMultipartForm.writeTo(AbstractMultipartForm.java:157)
+	at org.apache.http.entity.mime.MultipartFormEntity.writeTo(MultipartFormEntity.java:113)
+	at org.apache.http.impl.DefaultBHttpClientConnection.sendRequestEntity(DefaultBHttpClientConnection.java:156)
+	at org.apache.http.impl.conn.CPoolProxy.sendRequestEntity(CPoolProxy.java:152)
+	at org.apache.http.protocol.HttpRequestExecutor.doSendRequest(HttpRequestExecutor.java:238)
+	at org.apache.http.protocol.HttpRequestExecutor.execute(HttpRequestExecutor.java:123)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:272)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:186)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:89)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:185)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:83)
+	at org.telegram.telegrambots.bots.DefaultAbsSender.sendHttpPostRequest(DefaultAbsSender.java:1079)
+	at org.telegram.telegrambots.bots.DefaultAbsSender.execute(DefaultAbsSender.java:201)
+	... 8 more
+2025-02-02 19:19:42 ERROR UpdateController:175 - Ошибка при выполнении OCR
+net.sourceforge.tess4j.TesseractException: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:260)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:209)
+	at ru.relex.controller.UpdateController.performOCROnDocument(UpdateController.java:173)
+	at ru.relex.controller.UpdateController.extractPaymentAmountFromDocument(UpdateController.java:142)
+	at ru.relex.controller.UpdateController.handleDocumentMessage(UpdateController.java:127)
+	at ru.relex.controller.UpdateController.processUpdate(UpdateController.java:52)
+	at ru.relex.controller.TelegramBot.onUpdateReceived(TelegramBot.java:69)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:317)
+Caused by: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Png(PdfBoxUtilities.java:129)
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Tiff(PdfBoxUtilities.java:58)
+	at net.sourceforge.tess4j.util.PdfUtilities.convertPdf2Tiff(PdfUtilities.java:34)
+	at net.sourceforge.tess4j.util.ImageIOHelper.getImageFile(ImageIOHelper.java:327)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:225)
+	... 9 more
+2025-02-02 19:20:49 ERROR UpdateController:175 - Ошибка при выполнении OCR
+net.sourceforge.tess4j.TesseractException: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:260)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:209)
+	at ru.relex.controller.UpdateController.performOCROnDocument(UpdateController.java:173)
+	at ru.relex.controller.UpdateController.extractPaymentAmountFromDocument(UpdateController.java:142)
+	at ru.relex.controller.UpdateController.handleDocumentMessage(UpdateController.java:127)
+	at ru.relex.controller.UpdateController.processUpdate(UpdateController.java:52)
+	at ru.relex.controller.TelegramBot.onUpdateReceived(TelegramBot.java:69)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:317)
+Caused by: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Png(PdfBoxUtilities.java:129)
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Tiff(PdfBoxUtilities.java:58)
+	at net.sourceforge.tess4j.util.PdfUtilities.convertPdf2Tiff(PdfUtilities.java:34)
+	at net.sourceforge.tess4j.util.ImageIOHelper.getImageFile(ImageIOHelper.java:327)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:225)
+	... 9 more
+2025-02-02 19:22:43 ERROR UpdateController:177 - Ошибка при выполнении OCR
+net.sourceforge.tess4j.TesseractException: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:260)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:209)
+	at ru.relex.controller.UpdateController.performOCROnDocument(UpdateController.java:175)
+	at ru.relex.controller.UpdateController.extractPaymentAmountFromDocument(UpdateController.java:144)
+	at ru.relex.controller.UpdateController.handleDocumentMessage(UpdateController.java:129)
+	at ru.relex.controller.UpdateController.processUpdate(UpdateController.java:54)
+	at ru.relex.controller.TelegramBot.onUpdateReceived(TelegramBot.java:69)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:317)
+Caused by: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Png(PdfBoxUtilities.java:129)
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Tiff(PdfBoxUtilities.java:58)
+	at net.sourceforge.tess4j.util.PdfUtilities.convertPdf2Tiff(PdfUtilities.java:34)
+	at net.sourceforge.tess4j.util.ImageIOHelper.getImageFile(ImageIOHelper.java:327)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:225)
+	... 9 more
+2025-02-02 19:23:50 ERROR UpdateController:177 - Ошибка при выполнении OCR
+net.sourceforge.tess4j.TesseractException: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:260)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:209)
+	at ru.relex.controller.UpdateController.performOCROnDocument(UpdateController.java:175)
+	at ru.relex.controller.UpdateController.extractPaymentAmountFromDocument(UpdateController.java:144)
+	at ru.relex.controller.UpdateController.handleDocumentMessage(UpdateController.java:129)
+	at ru.relex.controller.UpdateController.processUpdate(UpdateController.java:54)
+	at ru.relex.controller.TelegramBot.onUpdateReceived(TelegramBot.java:69)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:317)
+Caused by: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Png(PdfBoxUtilities.java:129)
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Tiff(PdfBoxUtilities.java:58)
+	at net.sourceforge.tess4j.util.PdfUtilities.convertPdf2Tiff(PdfUtilities.java:34)
+	at net.sourceforge.tess4j.util.ImageIOHelper.getImageFile(ImageIOHelper.java:327)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:225)
+	... 9 more
+2025-02-02 19:27:47 ERROR UpdateController:177 - Ошибка при выполнении OCR
+net.sourceforge.tess4j.TesseractException: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:260)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:209)
+	at ru.relex.controller.UpdateController.performOCROnDocument(UpdateController.java:175)
+	at ru.relex.controller.UpdateController.extractPaymentAmountFromDocument(UpdateController.java:144)
+	at ru.relex.controller.UpdateController.handleDocumentMessage(UpdateController.java:129)
+	at ru.relex.controller.UpdateController.processUpdate(UpdateController.java:54)
+	at ru.relex.controller.TelegramBot.onUpdateReceived(TelegramBot.java:69)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.telegram.telegrambots.meta.generics.LongPollingBot.onUpdatesReceived(LongPollingBot.java:27)
+	at org.telegram.telegrambots.updatesreceivers.DefaultBotSession$HandlerThread.run(DefaultBotSession.java:317)
+Caused by: java.io.IOException: Error extracting PDF Document
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Png(PdfBoxUtilities.java:129)
+	at net.sourceforge.tess4j.util.PdfBoxUtilities.convertPdf2Tiff(PdfBoxUtilities.java:58)
+	at net.sourceforge.tess4j.util.PdfUtilities.convertPdf2Tiff(PdfUtilities.java:34)
+	at net.sourceforge.tess4j.util.ImageIOHelper.getImageFile(ImageIOHelper.java:327)
+	at net.sourceforge.tess4j.Tesseract.doOCR(Tesseract.java:225)
+	... 9 more
