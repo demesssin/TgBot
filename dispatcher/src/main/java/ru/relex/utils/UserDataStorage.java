@@ -2,12 +2,10 @@ package ru.relex.utils;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -16,12 +14,10 @@ public class UserDataStorage {
     public final Map<String, Map<String, String>> userData = new HashMap<>();
     private final Set<String> uniqueChecks = new HashSet<>();
 
-    public boolean validateAndSaveCheck(Update update) {
-        String uniqueNumber = extractUniqueNumber(update);
+    public boolean validateAndSaveCheck(String uniqueNumber) {
         if (uniqueNumber == null || uniqueChecks.contains(uniqueNumber)) return false;
 
         uniqueChecks.add(uniqueNumber);
-
         userData.putIfAbsent(uniqueNumber, new HashMap<>());
 
         return true;
@@ -73,7 +69,25 @@ public class UserDataStorage {
         }
     }
 
-    public String extractUniqueNumber(Update update) {
-        return UUID.randomUUID().toString();
+    public int getUUIDCount(String checkNumber) {
+        return (int) Math.max(1, userData.getOrDefault(checkNumber, new HashMap<>())
+                .getOrDefault("paymentAmount", "0")
+                .chars()
+                .map(Character::getNumericValue)
+                .sum() / 7900);
     }
+
+    public void addUUID(String checkNumber, String uid) {
+        userData.computeIfAbsent(checkNumber, k -> new HashMap<>())
+                .merge("uid", uid, (oldVal, newVal) -> oldVal + "," + newVal);
+    }
+
+    public boolean isCheckProcessed(String checkNumber) {
+        return uniqueChecks.contains(checkNumber);
+    }
+
+    public void saveCheckNumber(String checkNumber) {
+        uniqueChecks.add(checkNumber);
+    }
+
 }

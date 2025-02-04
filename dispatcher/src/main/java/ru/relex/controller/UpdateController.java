@@ -20,12 +20,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
-
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -38,9 +34,8 @@ public class UpdateController {
     private final UpdateProducer updateProducer;
     private final UserDataStorage userDataStorage;
 
-    // Состояние ввода данных
-    private String currentUserCheckNumber; // Номер чека для текущего пользователя
-    private int currentInputStep = 0; // Шаг ввода (0 - ФИО, 1 - адрес, 2 - телефон)
+    private String currentUserCheckNumber;
+    private int currentInputStep = 0;
 
     public UpdateController(MessageUtils messageUtils, UpdateProducer updateProducer, UserDataStorage userDataStorage) {
         this.messageUtils = messageUtils;
@@ -71,81 +66,77 @@ public class UpdateController {
 
     private void handleTextMessage(Update update) {
         String text = update.getMessage().getText();
-        Long chatId = update.getMessage().getChatId();
 
         if (text.equals("/start")) {
             setView(messageUtils.generateSendMessageWithText(update, "Добро пожаловать! Пожалуйста, отправьте чек в формате PDF."));
         } else if (text.equals("/export")) {
-            userDataStorage.assignRandomUUIDs(); // Генерация случайных UID для всех пользователей
+            userDataStorage.assignRandomUUIDs();
             File exportedFile = userDataStorage.exportToExcel();
             if (exportedFile != null && exportedFile.exists()) {
-                sendExcelFile(update); // Отправляем файл пользователю
-                sendUIDsToChat(update); // Отправляем UID пользователям
+                sendExcelFile(update);
+                sendUIDsToChat(update);
             } else {
                 setView(messageUtils.generateSendMessageWithText(update, "Ошибка: Не удалось экспортировать данные в Excel."));
             }
         } else if (text.equals("/get_excel")) {
-            sendExcelFile(update); // Отправляем файл пользователю
+            sendExcelFile(update);
         } else {
             collectUserInfo(update, text);
         }
     }
 
     private void collectUserInfo(Update update, String text) {
-        // Если номер чека еще не установлен
         if (currentUserCheckNumber == null) {
             setView(messageUtils.generateSendMessageWithText(update, "Ошибка: Сначала отправьте чек в формате PDF."));
             return;
         }
 
         switch (currentInputStep) {
-            case 0: // ФИО
-                userDataStorage.userData.putIfAbsent(currentUserCheckNumber, new HashMap<>()); // Создаем запись если ее нет
+            case 0:
+                userDataStorage.userData.putIfAbsent(currentUserCheckNumber, new HashMap<>());
                 userDataStorage.userData.get(currentUserCheckNumber).put("fio", text);
                 setView(messageUtils.generateSendMessageWithText(update, "Теперь введите ваш адрес:"));
                 currentInputStep++;
                 break;
-            case 1: // Адрес
+            case 1:
                 userDataStorage.userData.get(currentUserCheckNumber).put("address", text);
                 setView(messageUtils.generateSendMessageWithText(update, "Теперь введите ваш номер телефона:"));
                 currentInputStep++;
                 break;
-            case 2: // Номер телефона
+            case 2:
                 userDataStorage.userData.get(currentUserCheckNumber).put("phone", text);
-                String uid = UUID.randomUUID().toString(); // Генерируем UUID
-                userDataStorage.userData.get(currentUserCheckNumber).put("uid", uid);
-                setView(messageUtils.generateSendMessageWithText(update, "Спасибо! Ваши данные сохранены. Ваш UUID: " + uid));
-                currentUserCheckNumber = null; // Сбрасываем номер чека и шаги ввода
+                int uuidCount = userDataStorage.getUUIDCount(currentUserCheckNumber);
+
+                for (int i = 0; i < uuidCount; i++) {
+                    String uid = UUID.randomUUID().toString();
+                    userDataStorage.addUUID(currentUserCheckNumber, uid);
+                    setView(messageUtils.generateSendMessageWithText(update, "Спасибо! Ваши данные сохранены. Ваш UUID: " + uid));
+                }
+
+                currentUserCheckNumber = null;
                 currentInputStep = 0;
                 break;
-            default:
-                break;
         }
-    }
-
-    private void sendUIDsToChat(Update update) {
-        StringBuilder uidList = new StringBuilder("Сгенерированные UID для пользователей:\n");
-
-        for (var entry : userDataStorage.userData.entrySet()) { // Доступ к userData из UserDataStorage
-            String uid = entry.getValue().get("uid");
-            uidList.append(entry.getKey()).append(": ").append(uid).append("\n"); // Добавляем уникальный номер и его UID
-        }
-
-        setView(messageUtils.generateSendMessageWithText(update, uidList.toString()));
     }
 
     private void handleDocumentMessage(Update update) {
         try {
-            File pdfFile = downloadPdfFromTelegram(update); // Метод для загрузки файла от пользователя
+            File pdfFile = downloadPdfFromTelegram(update);
+            double paymentAmount = extractPaymentAmountFromDocument(pdfFile);
+            String checkNumber = extractCheckNumberFromDocument(pdfFile);
 
-            double paymentAmount = extractPaymentAmountFromDocument(pdfFile); // Извлекаем сумму из документа
+            if (userDataStorage.isCheckProcessed(checkNumber)) {
+                setView(messageUtils.generateSendMessageWithText(update, "Ошибка: Чек с номером " + checkNumber + " уже был обработан."));
+                return;
+            }
 
             if (paymentAmount >= 7900) {
-                currentUserCheckNumber = UUID.randomUUID().toString(); // Генерируем уникальный номер чека
-                userDataStorage.userData.putIfAbsent(currentUserCheckNumber, new HashMap<>()); // Создаем запись для номера чека
+                currentUserCheckNumber = checkNumber;
+                userDataStorage.userData.putIfAbsent(currentUserCheckNumber, new HashMap<>());
+                userDataStorage.saveCheckNumber(currentUserCheckNumber);
 
                 setView(messageUtils.generateSendMessageWithText(update, "Чек принят. Пожалуйста, введите ваше ФИО:"));
-                currentInputStep = 0; // Начинаем с ФИО
+                currentInputStep = 0;
             } else {
                 setView(messageUtils.generateSendMessageWithText(update, "Ошибка: Сумма на чеке должна быть больше или равна 7900."));
             }
@@ -156,71 +147,92 @@ public class UpdateController {
         }
     }
 
-    private int extractPaymentAmountFromDocument(File pdfFile) throws IOException {
+    private double extractPaymentAmountFromDocument(File pdfFile) throws IOException, TesseractException {
         Tesseract tesseract = new Tesseract();
         tesseract.setDatapath("C:\\Program Files\\Tesseract-OCR\\tessdata");
         tesseract.setLanguage("rus+eng");
 
-        String numericValue = "0";
         try (PDDocument document = PDDocument.load(pdfFile)) {
             PDFRenderer pdfRenderer = new PDFRenderer(document);
+            for (int page = 0; page < document.getNumberOfPages(); page++) {
+                log.info("Сканирование страницы: " + (page + 1));
+                BufferedImage image = pdfRenderer.renderImageWithDPI(page, 300);
+                String pageText = tesseract.doOCR(image);
+                log.info("Распознанный текст страницы: \n" + pageText);
 
+                String[] lines = pageText.split("\n");
+                boolean ignoreNextLine = false;
+
+                for (String line : lines) {
+                    log.info("Обрабатываемая строка: " + line);
+
+                    if (ignoreNextLine) {
+                        ignoreNextLine = false;
+                        String amount = line.replaceAll("[^0-9,]", "").trim();
+                        if (!amount.isEmpty()) {
+                            log.info("Принятая сумма после игнорированной строки: " + amount);
+                            return Double.parseDouble(amount.replace(",", "."));
+                        }
+                    }
+
+                    if (line.contains("ИП Sulu Home(6. 18-20)")) {
+                        log.info("Обнаружена строка 'ИП Sulu Home(6. 18-20)', игнорируем её и принимаем следующую строку.");
+                        ignoreNextLine = true;
+                        continue;
+                    }
+
+                    if (line.matches(".*(\\d{1,3}(?:\\s\\d{3})*(?:,\\d{2})?).*")) {
+                        String amount = line.replaceAll("[^0-9,]", "").trim();
+                        log.info("Найденная сумма: " + amount);
+                        return Double.parseDouble(amount.replace(",", "."));
+                    }
+                }
+            }
+        }
+        log.warn("Не удалось найти сумму на чеке.");
+        return 0;
+    }
+
+
+    private void sendUIDsToChat(Update update) {
+        StringBuilder uidList = new StringBuilder("Сгенерированные UUID для пользователей:\n");
+        for (var entry : userDataStorage.userData.entrySet()) {
+            String uids = entry.getValue().get("uid");
+            uidList.append(entry.getKey()).append(": ").append(uids).append("\n");
+        }
+        setView(messageUtils.generateSendMessageWithText(update, uidList.toString()));
+    }
+
+    private String extractCheckNumberFromDocument(File pdfFile) throws IOException, TesseractException {
+        Tesseract tesseract = new Tesseract();
+        tesseract.setDatapath("C:\\Program Files\\Tesseract-OCR\\tessdata");
+        tesseract.setLanguage("rus+eng");
+
+        try (PDDocument document = PDDocument.load(pdfFile)) {
+            PDFRenderer pdfRenderer = new PDFRenderer(document);
             for (int page = 0; page < document.getNumberOfPages(); page++) {
                 BufferedImage image = pdfRenderer.renderImageWithDPI(page, 300);
                 String pageText = tesseract.doOCR(image);
 
-                log.info("Распознанный текст:\n" + pageText);
-
-                String[] lines = pageText.split("\n");
-                for (String line : lines) {
-                    if (line.toLowerCase().contains("сумма") || line.toLowerCase().contains("итого") || line.toLowerCase().contains("total")) {
-                        log.info("Обнаружена строка с суммой: " + line);
-
-                        // Удаляем все символы, кроме цифр, пробелов, запятых и точек
-                        numericValue = line.replaceAll("[^0-9,.\\s]", "").trim();
-
-                        // Объединяем разделённые пробелами числа, например "7 900" -> "7900"
-                        numericValue = numericValue.replaceAll("(\\d)\\s+(\\d)", "$1$2");
-
-                        // Заменяем запятые на точки
-                        numericValue = numericValue.replace(",", ".");
-
-                        log.info("Обнаруженное числовое значение: " + numericValue); // Логируем, какое число было обнаружено
-
-                        try {
-                            // Если значение содержит дробную часть, округляем до ближайшего целого
-                            double tempAmount = Double.parseDouble(numericValue);
-                            int extractedAmount = (int) Math.round(tempAmount); // Преобразуем в Integer
-                            log.info("Извлеченная сумма (округлённая): " + extractedAmount);
-                            return extractedAmount; // Возвращаем сумму как Integer
-                        } catch (NumberFormatException e) {
-                            log.error("Ошибка преобразования суммы: " + numericValue, e);
-                        }
+                for (String line : pageText.split("\n")) {
+                    if (line.contains("№ чека")) {
+                        String checkNumber = line.replaceAll("[^0-9]", "").trim();
+                        log.info("Извлечён номер чека: " + checkNumber);
+                        return checkNumber;
                     }
                 }
             }
-        } catch (TesseractException e) {
-            log.error("Ошибка при выполнении OCR", e);
         }
-
-        log.info("Финальная сумма из чека: " + numericValue);
-        return Integer.parseInt(numericValue); // Возвращаем итоговое значение как Integer
+        return UUID.randomUUID().toString();
     }
-
-
-
-
 
     private File downloadPdfFromTelegram(Update update) throws IOException, TelegramApiException {
         String fileId = update.getMessage().getDocument().getFileId();
-
         String filePathResponse = telegramBot.execute(new GetFile(fileId)).getFilePath();
-
         String fileUrl = "https://api.telegram.org/file/bot" + telegramBot.getBotToken() + "/" + filePathResponse;
 
         File pdfFile = new File("C:\\Users\\Admin\\Documents\\" + fileId + ".pdf");
-
-        try(InputStream in = new URL(fileUrl).openStream()) {
+        try (InputStream in = new URL(fileUrl).openStream()) {
             Files.copy(in, pdfFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
 
