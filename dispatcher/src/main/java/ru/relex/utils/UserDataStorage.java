@@ -72,16 +72,21 @@ public class UserDataStorage {
     }
 
     public int getUUIDCount(String checkNumber) {
-        return (int) Math.max(1, userData.getOrDefault(checkNumber, new HashMap<>())
-                .getOrDefault("paymentAmount", "0")
-                .chars()
-                .map(Character::getNumericValue)
-                .sum() / 7900);
+        String amountStr = userData.getOrDefault(checkNumber, new HashMap<>()).get("paymentAmount");
+        if (amountStr == null || amountStr.isEmpty()) {
+            return 1;
+        }
+        try {
+            double paymentAmount = Double.parseDouble(amountStr);
+            return Math.max(1, (int) Math.round(paymentAmount / 7900.0));
+        } catch (NumberFormatException e) {
+            return 1;
+        }
     }
 
     public void addUUID(String checkNumber, String uid) {
         userData.computeIfAbsent(checkNumber, k -> new HashMap<>())
-                .merge("uid", uid, (oldVal, newVal) -> oldVal + "," + newVal);
+                .merge("uid", uid, (oldVal, newVal) -> oldVal + ", " + newVal);
     }
 
     public boolean isCheckProcessed(String checkNumber) {

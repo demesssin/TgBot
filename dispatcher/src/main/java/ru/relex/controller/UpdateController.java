@@ -107,11 +107,13 @@ public class UpdateController {
                 userDataStorage.userData.get(currentUserCheckNumber).put("phone", text);
                 int uuidCount = userDataStorage.getUUIDCount(currentUserCheckNumber);
 
+                StringBuilder uuidMessage = new StringBuilder("Спасибо! Ваши данные сохранены. Ваши UUID:\n");
                 for (int i = 0; i < uuidCount; i++) {
                     String uid = UUID.randomUUID().toString();
                     userDataStorage.addUUID(currentUserCheckNumber, uid);
-                    setView(messageUtils.generateSendMessageWithText(update, "Спасибо! Ваши данные сохранены. Ваш UUID: " + uid));
+                    uuidMessage.append(uid).append("\n");
                 }
+                setView(messageUtils.generateSendMessageWithText(update, uuidMessage.toString()));
 
                 currentUserCheckNumber = null;
                 currentInputStep = 0;
@@ -198,7 +200,9 @@ public class UpdateController {
         StringBuilder uidList = new StringBuilder("Сгенерированные UUID для пользователей:\n");
         for (var entry : userDataStorage.userData.entrySet()) {
             String uids = entry.getValue().get("uid");
-            uidList.append(entry.getKey()).append(": ").append(uids).append("\n");
+            if (uids != null && !uids.isEmpty()) {
+                uidList.append(entry.getKey()).append(": ").append(uids).append("\n");
+            }
         }
         setView(messageUtils.generateSendMessageWithText(update, uidList.toString()));
     }
