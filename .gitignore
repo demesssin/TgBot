@@ -37,4 +37,5 @@ build/
 ### Mac OS ###
 .DS_Store
 
-.application.properties
+dispatcher/src/main/resources
+
