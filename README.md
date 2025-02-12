@@ -10,3 +10,5 @@ I connected a message broker and a microservice on Node to it.js, which I decide
 The Apache PDFBox libraries, Apache POI, and Tesseract technology were used.
 
 Thanks for attention and reading! 
+
+Wish u a good luck and hiring me for job :)
